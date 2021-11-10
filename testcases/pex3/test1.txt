@@ -1,0 +1,8 @@
+﻿def foo {
+    int x;
+    x = 10;
+}
+
+main {
+    foo();
+}
