@@ -88,7 +88,7 @@ namespace CS426.analysis
             // This will contain the definition of the variable from the
             // symbol table, assuming it exists
             Definition varDefinition;
-            
+
             // Checks the symbol table to see if the variable has been declared
             if (!localSymbolTable.TryGetValue(varName, out varDefinition))
             {
@@ -134,7 +134,7 @@ namespace CS426.analysis
             Definition expressionDefinition;
             Definition rightParenthesisDefinition;
 
-            if(!decoratedParseTree.TryGetValue(node.GetLeftParenthesis(), out leftParenthesisDefinition))
+            if (!decoratedParseTree.TryGetValue(node.GetLeftParenthesis(), out leftParenthesisDefinition))
             {
                 PrintWarning(node.GetLeftParenthesis(), "Expected (");
 
@@ -248,7 +248,8 @@ namespace CS426.analysis
             {
                 // if the error was here, it would have already been found
             }
-            else {
+            else
+            {
                 decoratedParseTree.Add(node, expression6Def);
                 decoratedParseTree.Add(node, divDef);
                 decoratedParseTree.Add(node, expression7Def);
@@ -511,7 +512,8 @@ namespace CS426.analysis
             Definition andDef;
             Definition expression3Def;
 
-            if (!decoratedParseTree.TryGetValue(node.GetExpression2(), out expression2Def)){
+            if (!decoratedParseTree.TryGetValue(node.GetExpression2(), out expression2Def))
+            {
                 // If the error was here, it would have already been found
             }
             else if (!decoratedParseTree.TryGetValue(node.GetAnd(), out andDef))
@@ -590,7 +592,7 @@ namespace CS426.analysis
             else if (localSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
             {
                 // If the id exists, then we can't declare something with the same name
-                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text 
+                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
                     + " has already been declared");
             }
             else
@@ -628,8 +630,64 @@ namespace CS426.analysis
             }
             else if (((VariableDefinition)idDef).variableType.name != expressionDef.name)
             {
-                PrintWarning(node.GetId(), "Cannot assign value of type " + expressionDef.name 
+                PrintWarning(node.GetId(), "Cannot assign value of type " + expressionDef.name
                     + " to variable of type " + ((VariableDefinition)idDef).variableType.name);
+            }
+            else
+            {
+                // NOTHING IS REQUIRED ONCE ALL THE TESTS HAVE PASSED
+            }
+        }
+
+        // --------------------------------------------------------------
+        // If STATEMENT
+        // --------------------------------------------------------------
+        public override void OutAIfStatement(AIfStatement node)
+        {
+            
+            Definition expressionDef;
+            
+            Definition statementDef;
+            
+            
+
+            if (!decoratedParseTree.TryGetValue(node.GetExpression(), out expressionDef))
+            {
+                // We are checking to see if the node below us was decorated.
+                // We don't have to print an error, because if something bad happened
+                // the error would have been printed at the lower node.
+            }
+            else if (!(expressionDef is BooleanDefinition))
+            {
+                PrintWarning(node.GetExpression(), " is not bool");
+            }
+            else
+            {
+                // NOTHING IS REQUIRED ONCE ALL THE TESTS HAVE PASSED
+            }
+        }
+
+        // --------------------------------------------------------------
+        // If STATEMENT
+        // --------------------------------------------------------------
+        public override void OutAWhileStatement(AWhileStatement node)
+        {
+
+            Definition expressionDef;
+
+            Definition statementDef;
+
+
+
+            if (!decoratedParseTree.TryGetValue(node.GetExpression(), out expressionDef))
+            {
+                // We are checking to see if the node below us was decorated.
+                // We don't have to print an error, because if something bad happened
+                // the error would have been printed at the lower node.
+            }
+            else if (!(expressionDef is BooleanDefinition))
+            {
+                PrintWarning(node.GetExpression(), " is not Bool");
             }
             else
             {
@@ -713,7 +771,36 @@ namespace CS426.analysis
                 Console.WriteLine("Invalid Parameter: " + expressionDef);
             }
         }
+
+        // --------------------------------------------------------------
+        // Constant STATEMENT
+        // --------------------------------------------------------------
+        public override void OutACosntantStatement(AConstantStatement node)
+        {
+            Definition typeDef;
+            Definition idDef;
+
+            if (!globalSymbolTable.TryGetValue(node.GetType().Text, out typeDef))
+            {
+                // If the type doesn't exist, throw an error
+                PrintWarning(node.GetType(), "Type " + node.GetType().Text + " does not exist");
+            }
+            else if (globalSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
+            {
+                // If the id exists, then we can't declare something with the same name
+                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
+                    + " has already been declared");
+            }
+            else
+            {
+                // Add the id to the symbol table
+                ConstantDefinition newConstantDefinition = new ConstantDefinition();
+                newConstantDefinition.name = node.GetVarname().Text;
+                newConstantDefinition.constantType = (TypeDefinition)typeDef;
+
+                globalSymbolTable.Add(node.GetVarname().Text, newConstantDefinition);
+            }
+        }
     }
 }
-
 
