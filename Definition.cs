@@ -16,6 +16,10 @@ namespace CS426.analysis
 
     public class NumberDefinition : TypeDefinition { }
 
+    public class IntDefinition : TypeDefinition { }
+
+    public class FloatDefinition : TypeDefinition { }
+
     public class StringDefinition : TypeDefinition { }
 
     public class BooleanDefinition : TypeDefinition {  }

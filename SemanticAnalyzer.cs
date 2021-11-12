@@ -29,11 +29,11 @@ namespace CS426.analysis
         public override void InAProgram(AProgram node)
         {
             // Create Definition for Integers
-            Definition intDefinition = new NumberDefinition();
+            Definition intDefinition = new IntDefinition();
             intDefinition.name = "int";
 
             // Create Definition for Floats
-            Definition floatDefinition = new NumberDefinition();
+            Definition floatDefinition = new FloatDefinition();
             intDefinition.name = "float";
 
             // Create Definition for Strings
@@ -56,7 +56,7 @@ namespace CS426.analysis
         public override void OutAIntexpOperand(AIntexpOperand node)
         {
             // Creates the Definition Object we will add to our parse tree
-            Definition intDefinition = new NumberDefinition();
+            Definition intDefinition = new IntDefinition();
             intDefinition.name = "int";
 
             // Adds this node to the decorated parse tree
@@ -65,7 +65,7 @@ namespace CS426.analysis
         public override void OutAFloatexpOperand(AFloatexpOperand node)
         {
             // Creates the Definition Object we will add to our parse tree
-            Definition floatDefinition = new NumberDefinition();
+            Definition floatDefinition = new FloatDefinition();
             floatDefinition.name = "float";
 
             // Adds this node to the decorated parse tree
@@ -90,7 +90,7 @@ namespace CS426.analysis
             Definition varDefinition;
 
             // Checks the symbol table to see if the variable has been declared
-            if (!localSymbolTable.TryGetValue(varName, out varDefinition))
+            if (!localSymbolTable.TryGetValue(varName, out varDefinition) && !globalSymbolTable.TryGetValue(varName, out varDefinition))
             {
                 // Prints out a warning that the variable does not exist
                 PrintWarning(node.GetId(), "Variable " + varName + " does not exist");
@@ -98,7 +98,7 @@ namespace CS426.analysis
             // Checks to see if the value obtained from the localSymbolTable is a VariableDefinition
             else if (!(varDefinition is VariableDefinition))
             {
-                PrintWarning(node.GetId(), "Identifier" + varName + " is not a variable");
+                PrintWarning(node.GetId(), "Identifier " + varName + " is not a variable");
             }
             else
             {
@@ -659,7 +659,7 @@ namespace CS426.analysis
             }
             else if (!(expressionDef is BooleanDefinition))
             {
-                PrintWarning(node.GetExpression(), " is not bool");
+                Console.WriteLine("is not bool");
             }
             else
             {
@@ -687,7 +687,7 @@ namespace CS426.analysis
             }
             else if (!(expressionDef is BooleanDefinition))
             {
-                PrintWarning(node.GetExpression(), " is not Bool");
+                Console.WriteLine("is not bool");
             }
             else
             {
@@ -766,7 +766,7 @@ namespace CS426.analysis
                 // We don't have to print an error, because if something bad happened
                 // the error would have been printed at the lower node.
             }
-            else if (!(expressionDef is NumberDefinition) || !(expressionDef is StringDefinition))
+            else if (!(expressionDef is IntDefinition) || !(expressionDef is FloatDefinition) || !(expressionDef is StringDefinition))
             {
                 Console.WriteLine("Invalid Parameter: " + expressionDef);
             }
@@ -775,7 +775,7 @@ namespace CS426.analysis
         // --------------------------------------------------------------
         // Constant STATEMENT
         // --------------------------------------------------------------
-        public override void OutACosntantStatement(AConstantStatement node)
+        public override void OutAConstantDeclaration(AConstantDeclaration node)
         {
             Definition typeDef;
             Definition idDef;

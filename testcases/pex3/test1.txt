@@ -1,12 +1,8 @@
-﻿def foo(int x){
-
-	int x;
-	x = 5;
-
-}
+﻿const int x = 5;
 
 main{
-	
-	foo();
+
+	int y;
+	y = 5;
 
 }
