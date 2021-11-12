@@ -189,6 +189,7 @@ namespace CS426.analysis
             }
             else
             {
+                // I think we need to add this as a boolean?
                 decoratedParseTree.Add(node, notDef);
                 decoratedParseTree.Add(node, expression8Def);
             }
@@ -382,6 +383,13 @@ namespace CS426.analysis
             {
                 // If the error was here, it would have already been found
             }
+            else
+            {
+                // I think we need to add this node as a boolean?
+                decoratedParseTree.Add(node, expression4Def);
+                decoratedParseTree.Add(node, greaterThanDef);
+                decoratedParseTree.Add(node, expression5Def);
+            }
         }
         public override void OutALessexpExpression4(ALessexpExpression4 node)
         {
@@ -400,6 +408,13 @@ namespace CS426.analysis
             else if (!decoratedParseTree.TryGetValue(node.GetExpression5(), out expression5Def))
             {
                 // If the error was here, it would have already been found
+            }
+            else
+            {
+                // I think we need to add this node as a boolean?
+                decoratedParseTree.Add(node, expression4Def);
+                decoratedParseTree.Add(node, lessThanDef);
+                decoratedParseTree.Add(node, expression5Def);
             }
         }
 
@@ -439,6 +454,7 @@ namespace CS426.analysis
             }
             else
             {
+                // I think we need to add this node as a boolean?
                 decoratedParseTree.Add(node, expression3Def);
                 decoratedParseTree.Add(node, notEqualDef);
                 decoratedParseTree.Add(node, expression4Def);
@@ -464,6 +480,7 @@ namespace CS426.analysis
             }
             else
             {
+                // I think we need to add this node as a boolean?
                 decoratedParseTree.Add(node, expression3Def);
                 decoratedParseTree.Add(node, equalDef);
                 decoratedParseTree.Add(node, expression4Def);
