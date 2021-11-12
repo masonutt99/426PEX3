@@ -34,7 +34,7 @@ namespace CS426.analysis
 
             // Create Definition for Floats
             Definition floatDefinition = new FloatDefinition();
-            intDefinition.name = "float";
+            floatDefinition.name = "float";
 
             // Create Definition for Strings
             Definition strDefinition = new StringDefinition();
@@ -96,7 +96,7 @@ namespace CS426.analysis
                 PrintWarning(node.GetId(), "Variable " + varName + " does not exist");
             }
             // Checks to see if the value obtained from the localSymbolTable is a VariableDefinition
-            else if (!(varDefinition is VariableDefinition))
+            else if (!(varDefinition is VariableDefinition))  // THIS LINE WAS CHANGED
             {
                 PrintWarning(node.GetId(), "Identifier " + varName + " is not a variable");
             }
@@ -233,53 +233,57 @@ namespace CS426.analysis
         public override void OutADivexpExpression6(ADivexpExpression6 node)
         {
             Definition expression6Def;
-            Definition divDef;
             Definition expression7Def;
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression6(), out expression6Def))
             {
                 // If the error was here, it would have already been found
             }
-            else if (!decoratedParseTree.TryGetValue(node.GetDiv(), out divDef))
-            {
-                PrintWarning(node.GetDiv(), "Expected /");
-            }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression7(), out expression7Def))
             {
                 // if the error was here, it would have already been found
             }
+            else if (expression6Def.GetType() != expression7Def.GetType())
+            {
+                PrintWarning(node.GetDiv(), "Cannot divide " + expression6Def.name
+                    + " by " + expression7Def.name);
+            }
+            else if (!(expression6Def is IntDefinition) && !(expression6Def is FloatDefinition))
+            {
+                PrintWarning(node.GetDiv(), "Cannot divide something of type "
+                    + expression6Def.name);
+            }
             else
             {
                 decoratedParseTree.Add(node, expression6Def);
-                decoratedParseTree.Add(node, divDef);
-                decoratedParseTree.Add(node, expression7Def);
-
             }
         }
         public override void OutAMultexpExpression6(AMultexpExpression6 node)
         {
             Definition expression6Def;
-            Definition multDef;
             Definition expression7Def;
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression6(), out expression6Def))
             {
                 // If the error was here, it would have already been found
             }
-            else if (!decoratedParseTree.TryGetValue(node.GetMult(), out multDef))
-            {
-                PrintWarning(node.GetMult(), "Expected /");
-            }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression7(), out expression7Def))
             {
                 // if the error was here, it would have already been found
             }
+            else if (expression6Def.GetType() != expression7Def.GetType())
+            {
+                PrintWarning(node.GetMult(), "Cannot multiply " + expression6Def.name
+                    + " by " + expression7Def.name);
+            }
+            else if (!(expression6Def is IntDefinition) && !(expression6Def is FloatDefinition))
+            {
+                PrintWarning(node.GetMult(), "Cannot multiply something of type "
+                    + expression6Def.name);
+            }
             else
             {
                 decoratedParseTree.Add(node, expression6Def);
-                decoratedParseTree.Add(node, multDef);
-                decoratedParseTree.Add(node, expression7Def);
-
             }
         }
 
@@ -302,51 +306,57 @@ namespace CS426.analysis
         public override void OutASubtractexpExpression5(ASubtractexpExpression5 node)
         {
             Definition expression5Def;
-            Definition minusDef;
             Definition expression6Def;
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression5(), out expression5Def))
             {
                 // If the error was here, it would have already been found
             }
-            else if (!decoratedParseTree.TryGetValue(node.GetMinus(), out minusDef))
-            {
-                PrintWarning(node.GetMinus(), "Expected -");
-            }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression6(), out expression6Def))
             {
                 // If the error was here, it would have already been found
             }
+            else if (expression5Def.GetType() != expression6Def.GetType())
+            {
+                PrintWarning(node.GetMinus(), "Cannot subtract " + expression5Def.name
+                    + " by " + expression6Def.name);
+            }
+            else if (!(expression5Def is IntDefinition) && !(expression5Def is FloatDefinition))
+            {
+                PrintWarning(node.GetMinus(), "Cannot subtract something of type "
+                    + expression5Def.name);
+            }
             else
             {
                 decoratedParseTree.Add(node, expression5Def);
-                decoratedParseTree.Add(node, minusDef);
-                decoratedParseTree.Add(node, expression6Def);
             }
         }
         public override void OutAAddexpExpression5(AAddexpExpression5 node)
         {
             Definition expression5Def;
-            Definition plusDef;
             Definition expression6Def;
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression5(), out expression5Def))
             {
                 // If the error was here, it would have already been found
             }
-            else if (!decoratedParseTree.TryGetValue(node.GetPlus(), out plusDef))
-            {
-                PrintWarning(node.GetPlus(), "Expected -");
-            }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression6(), out expression6Def))
             {
                 // If the error was here, it would have already been found
             }
+            else if (expression5Def.GetType() != expression6Def.GetType())
+            {
+                PrintWarning(node.GetPlus(), "Cannot add " + expression5Def.name
+                    + " by " + expression6Def.name);
+            }
+            else if (!(expression5Def is IntDefinition) && !(expression5Def is FloatDefinition))
+            {
+                PrintWarning(node.GetPlus(), "Cannot add something of type "
+                    + expression5Def.name);
+            }
             else
             {
                 decoratedParseTree.Add(node, expression5Def);
-                decoratedParseTree.Add(node, plusDef);
-                decoratedParseTree.Add(node, expression6Def);
             }
         }
 
@@ -595,6 +605,12 @@ namespace CS426.analysis
                 PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
                     + " has already been declared");
             }
+            else if (globalSymbolTable.TryGetValue(node.GetVarname().Text, out idDef))
+            {
+                // If the id exists, then we can't declare something with the same name
+                PrintWarning(node.GetVarname(), "ID " + node.GetVarname().Text
+                    + " has already been declared");
+            }
             else
             {
                 // Add the id to the symbol table
@@ -773,7 +789,7 @@ namespace CS426.analysis
         }
 
         // --------------------------------------------------------------
-        // Constant STATEMENT
+        // CONSTANT DECLARATION
         // --------------------------------------------------------------
         public override void OutAConstantDeclaration(AConstantDeclaration node)
         {
@@ -794,11 +810,11 @@ namespace CS426.analysis
             else
             {
                 // Add the id to the symbol table
-                ConstantDefinition newConstantDefinition = new ConstantDefinition();
-                newConstantDefinition.name = node.GetVarname().Text;
-                newConstantDefinition.constantType = (TypeDefinition)typeDef;
+                VariableDefinition newVariableDefinition = new VariableDefinition();
+                newVariableDefinition.name = node.GetVarname().Text;
+                newVariableDefinition.constantType = (TypeDefinition)typeDef;
 
-                globalSymbolTable.Add(node.GetVarname().Text, newConstantDefinition);
+                globalSymbolTable.Add(node.GetVarname().Text, newVariableDefinition);
             }
         }
     }

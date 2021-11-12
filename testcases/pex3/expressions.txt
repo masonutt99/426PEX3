@@ -1,0 +1,11 @@
+﻿const int x = 5;
+
+def foo(int x, float y, string z){
+	// statements
+}
+
+main{
+
+	foo(5, 1.2, "hey");
+
+}

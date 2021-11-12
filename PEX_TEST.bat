@@ -15,7 +15,7 @@ echo. >> %file%
 :: GOOD EXAMPLES
 :: ----------------------------------------
 echo Testing Declaration Statements >> %file%
-bin\Debug\ConsoleApplication.exe testcases\pex2\test1.txt >> %file%
+bin\Debug\ConsoleApplication.exe testcases\pex3\assignment.txt >> %file%
 echo. >> %file%
 
 :: ----------------------------------------

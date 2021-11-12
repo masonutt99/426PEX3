@@ -1,8 +1,0 @@
-﻿const int x = 5;
-
-main{
-
-	int y;
-	y = 5;
-
-}
