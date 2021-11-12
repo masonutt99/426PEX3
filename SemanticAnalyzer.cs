@@ -381,25 +381,33 @@ namespace CS426.analysis
             Definition expression4Def;
             Definition greaterThanDef;
             Definition expression5Def;
+            Definition booleanDefinition;
+
+            booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "bool";
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression4(), out expression4Def))
             {
                 // If the error was here, it would have already been found
             }
-            else if (!decoratedParseTree.TryGetValue(node.GetGreaterThan(), out greaterThanDef))
-            {
-                PrintWarning(node.GetGreaterThan(), "Expected >");
-            }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression5(), out expression5Def))
             {
                 // If the error was here, it would have already been found
             }
+            else if (expression4Def.GetType() != expression5Def.GetType())
+            {
+                PrintWarning(node.GetGreaterThan(), "Cannot compare " + expression4Def.name
+                    + " by " + expression5Def.name);
+            }
+            else if (!(expression4Def is IntDefinition) && !(expression4Def is FloatDefinition))
+            {
+                PrintWarning(node.GetGreaterThan(), "Cannot compare something of type "
+                    + expression4Def.name);
+            }
             else
             {
                 // I think we need to add this node as a boolean?
-                decoratedParseTree.Add(node, expression4Def);
-                decoratedParseTree.Add(node, greaterThanDef);
-                decoratedParseTree.Add(node, expression5Def);
+                decoratedParseTree.Add(node, booleanDefinition);
             }
         }
         public override void OutALessexpExpression4(ALessexpExpression4 node)
@@ -407,14 +415,14 @@ namespace CS426.analysis
             Definition expression4Def;
             Definition lessThanDef;
             Definition expression5Def;
+            Definition booleanDefinition;
+
+            booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "bool";
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression4(), out expression4Def))
             {
                 // If the error was here, it would have already been found
-            }
-            else if (!decoratedParseTree.TryGetValue(node.GetLessThan(), out lessThanDef))
-            {
-                PrintWarning(node.GetLessThan(), "Expected <");
             }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression5(), out expression5Def))
             {
@@ -423,9 +431,7 @@ namespace CS426.analysis
             else
             {
                 // I think we need to add this node as a boolean?
-                decoratedParseTree.Add(node, expression4Def);
-                decoratedParseTree.Add(node, lessThanDef);
-                decoratedParseTree.Add(node, expression5Def);
+                decoratedParseTree.Add(node, booleanDefinition);
             }
         }
 
@@ -451,13 +457,14 @@ namespace CS426.analysis
             Definition notEqualDef;
             Definition expression4Def;
 
+            Definition booleanDefinition;
+
+            booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "bool";
+
             if (!decoratedParseTree.TryGetValue(node.GetExpression3(), out expression3Def))
             {
                 // If the error was here, it would have already been found
-            }
-            else if (!decoratedParseTree.TryGetValue(node.GetNotEquivalent(), out notEqualDef))
-            {
-                PrintWarning(node.GetNotEquivalent(), "Expected !=");
             }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression4(), out expression4Def))
             {
@@ -466,9 +473,7 @@ namespace CS426.analysis
             else
             {
                 // I think we need to add this node as a boolean?
-                decoratedParseTree.Add(node, expression3Def);
-                decoratedParseTree.Add(node, notEqualDef);
-                decoratedParseTree.Add(node, expression4Def);
+                decoratedParseTree.Add(node, booleanDefinition);
             }
         }
         public override void OutAEqualexpExpression3(AEqualexpExpression3 node)
@@ -476,14 +481,14 @@ namespace CS426.analysis
             Definition expression3Def;
             Definition equalDef;
             Definition expression4Def;
+            Definition booleanDefinition;
+
+            booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "bool";
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression3(), out expression3Def))
             {
                 // If the error was here, it would have already been found
-            }
-            else if (!decoratedParseTree.TryGetValue(node.GetEquivalent(), out equalDef))
-            {
-                PrintWarning(node.GetEquivalent(), "Expected ==");
             }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression4(), out expression4Def))
             {
@@ -492,9 +497,7 @@ namespace CS426.analysis
             else
             {
                 // I think we need to add this node as a boolean?
-                decoratedParseTree.Add(node, expression3Def);
-                decoratedParseTree.Add(node, equalDef);
-                decoratedParseTree.Add(node, expression4Def);
+                decoratedParseTree.Add(node, booleanDefinition);
             }
         }
 
@@ -521,14 +524,14 @@ namespace CS426.analysis
             Definition expression2Def;
             Definition andDef;
             Definition expression3Def;
+            Definition booleanDefinition;
+
+            booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "bool";
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression2(), out expression2Def))
             {
                 // If the error was here, it would have already been found
-            }
-            else if (!decoratedParseTree.TryGetValue(node.GetAnd(), out andDef))
-            {
-                PrintWarning(node.GetAnd(), "Expected &&");
             }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression3(), out expression3Def))
             {
@@ -536,9 +539,7 @@ namespace CS426.analysis
             }
             else
             {
-                decoratedParseTree.Add(node, expression2Def);
-                decoratedParseTree.Add(node, andDef);
-                decoratedParseTree.Add(node, expression3Def);
+                decoratedParseTree.Add(node, booleanDefinition);
             }
         }
 
@@ -565,14 +566,14 @@ namespace CS426.analysis
             Definition expressionDef;
             Definition orDef;
             Definition expression2Def;
+            Definition booleanDefinition;
+
+            booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "bool";
 
             if (!decoratedParseTree.TryGetValue(node.GetExpression(), out expressionDef))
             {
                 // If the error was here, it would have already been found
-            }
-            else if (!decoratedParseTree.TryGetValue(node.GetOr(), out orDef))
-            {
-                PrintWarning(node.GetOr(), "Expected &&");
             }
             else if (!decoratedParseTree.TryGetValue(node.GetExpression2(), out expression2Def))
             {
@@ -580,9 +581,7 @@ namespace CS426.analysis
             }
             else
             {
-                decoratedParseTree.Add(node, expressionDef);
-                decoratedParseTree.Add(node, orDef);
-                decoratedParseTree.Add(node, expression2Def);
+                decoratedParseTree.Add(node, booleanDefinition);
             }
         }
 

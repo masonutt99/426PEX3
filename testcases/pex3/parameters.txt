@@ -1,11 +1,4 @@
-﻿const int x = 5;
-
-def foo(int x, float y, string z){
-	// statements
-}
+﻿// PARAMETER STUFF NOT WORKING
 
 main{
-
-	foo(5, 1.2, "hey");
-
 }

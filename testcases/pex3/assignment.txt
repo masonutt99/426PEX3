@@ -8,8 +8,8 @@ main{
 	x = 5;
 
 	float y;
-	y = b + 4.5;
+	y = 2.5 + 4.5;
 
 	string z;
-	z = c;
+	z = "no way this works first try...";
 }

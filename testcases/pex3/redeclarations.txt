@@ -1,11 +1,12 @@
-﻿const int x = 5;
-
-def foo(int x, float y, string z){
-	// statements
-}
+﻿const int b = 4;
 
 main{
 
-	foo(5, 1.2, "hey");
+int a;
+a = 5;
+
+float a;
+
+float b;
 
 }
