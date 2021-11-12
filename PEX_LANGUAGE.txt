@@ -109,7 +109,9 @@ Productions
 	expression2 = {andexp} expression2 and expression3 | {pass} expression3;
 	expression3 = {equalexp} expression3 equivalent expression4 | {notequalexp} expression3 not_equivalent expression4 | {pass} expression4;
 	expression4 = {lessexp} expression4 less_than expression5 | {greaterexp} expression4 greater_than expression5 | {pass} expression5;
+
 	expression5 = {addexp} expression5 plus expression6 | {subtractexp} expression5 minus expression6 | {pass} expression6;
+	
 	expression6 = {multexp} expression6 mult expression7 | {divexp} expression6 div expression7 | {pass} expression7;
 	expression7 = {negateexp} minus expression8 | {notexp} not expression8 | {pass} expression8;
 	expression8 = {parenthesesexp} left_parenthesis expression right_parenthesis | {pass} operand;

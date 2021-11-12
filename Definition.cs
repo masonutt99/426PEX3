@@ -26,6 +26,12 @@ namespace CS426.analysis
         public TypeDefinition variableType;
     }
 
+    public class ConstantDefinition : Definition
+    {
+        // Probably needs something to keep track of the type
+        public TypeDefinition constantType;
+    }
+
     public class FunctionDefinition : Definition
     {
         // Probably needs something to keep track of parameters
