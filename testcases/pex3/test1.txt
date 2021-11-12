@@ -1,8 +1,12 @@
-﻿def foo {
-    int x;
-    x = 10;
+﻿def foo(int x){
+
+	int x;
+	x = 5;
+
 }
 
-main {
-    foo();
+main{
+	
+	foo();
+
 }

@@ -14,6 +14,9 @@ namespace CS426.analysis
         // This symbol table keeps track of local "stuff"
         Dictionary<string, Definition> localSymbolTable = new Dictionary<string, Definition>();
 
+        // This symbol table keeps track of a parameter's ID and TYPE
+        Dictionary<string, Definition> parameterTable = new Dictionary<string, Definition>();
+
         // This is our decorated parse tree, implemented as a dictionary
         Dictionary<Node, Definition> decoratedParseTree = new Dictionary<Node, Definition>();
 
@@ -37,9 +40,14 @@ namespace CS426.analysis
             Definition strDefinition = new StringDefinition();
             strDefinition.name = "string";
 
+            // Create Definition for Booleans (To be used for if and while statements)
+            Definition booleanDefinition = new BooleanDefinition();
+            booleanDefinition.name = "boolean";
+
             globalSymbolTable.Add("int", intDefinition);
             globalSymbolTable.Add("float", floatDefinition);
             globalSymbolTable.Add("string", strDefinition);
+            globalSymbolTable.Add("boolean", booleanDefinition);
         }
 
         // --------------------------------------------------------------
@@ -54,7 +62,6 @@ namespace CS426.analysis
             // Adds this node to the decorated parse tree
             decoratedParseTree.Add(node, intDefinition);
         }
-
         public override void OutAFloatexpOperand(AFloatexpOperand node)
         {
             // Creates the Definition Object we will add to our parse tree
@@ -64,7 +71,6 @@ namespace CS426.analysis
             // Adds this node to the decorated parse tree
             decoratedParseTree.Add(node, floatDefinition);
         }
-
         public override void OutAStringexpOperand(AStringexpOperand node)
         {
             // Creates the Definition Object we will add to our parse tree
@@ -74,7 +80,6 @@ namespace CS426.analysis
             // Adds this node to the decorated parse tree
             decoratedParseTree.Add(node, stringDefinition);
         }
-
         public override void OutAVariableOperand(AVariableOperand node)
         {
             // Gets the Name of the ID
@@ -507,6 +512,7 @@ namespace CS426.analysis
                 decoratedParseTree.Add(node, expression3Def);
             }
         }
+
         // --------------------------------------------------------------
         // EXPRESSION
         // --------------------------------------------------------------
@@ -551,22 +557,6 @@ namespace CS426.analysis
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
         // --------------------------------------------------------------
         // DECLARE STATEMENT
         // --------------------------------------------------------------
@@ -598,7 +588,7 @@ namespace CS426.analysis
         }
 
         // --------------------------------------------------------------
-        // ASSIGNMENT
+        // ASSIGN STATEMENT
         // --------------------------------------------------------------
         public override void OutAAssignStatement(AAssignStatement node)
         {
@@ -631,9 +621,9 @@ namespace CS426.analysis
         }
 
         // --------------------------------------------------------------
-        // SUBFUNCTION DEFINITION
+        // FUNCTION DECLARATIONS
         // --------------------------------------------------------------
-        public override void InASingleSubfunction(ASingleSubfunction node)
+        public override void InAFunctionDeclaration(AFunctionDeclaration node)
         {
             Definition idDef;
 
@@ -653,14 +643,19 @@ namespace CS426.analysis
                 // TODO:  You will have to figure out how to populate this with parameters
                 // when you work on PEX 3
                 newFunctionDefinition.parameters = new List<VariableDefinition>();
+                // For each parameter we see, we want to be able to add it to the list of parameters
+                // How do we get each individual parameter, though?
+
+                /*for each param_name and param_type that comes from param_decs:
+                    add that param_name and param_type to the list as analysis tuple
+                    newFunctionDefinition.parameters.Add(param_name, param_type);*/
 
                 // Adds the Function!
                 globalSymbolTable.Add(node.GetId().Text, newFunctionDefinition);
             }
         }
-
-        public override void OutASingleSubfunction(ASingleSubfunction node)
-        {      
+        public override void OutAFunctionDeclaration(AFunctionDeclaration node)
+        {
             // Wipes out the local symbol table so that the next function doesn't have to deal with it
             localSymbolTable = new Dictionary<string, Definition>();
         }
@@ -680,13 +675,13 @@ namespace CS426.analysis
             {
                 PrintWarning(node.GetId(), "ID " + node.GetId().Text + " is not a function");
             }
-            
+
             // TODO:  Verify parameters are in the correct order, and are of the correct type
             // HINT:  You can use a class variable to "build" a list of the parameters as
             //        you discover them!
         }
 
-        public override void OutASingleParameters(ASingleParameters node)
+        public override void OutAParameter(AParameter node)
         {
             Definition expressionDef;
 
